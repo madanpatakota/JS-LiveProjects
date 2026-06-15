@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JavaScript Circle Animation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        #controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        label {
+            margin-right: 10px;
+            width: 200px;
+            /* Adjust width as needed */
+            text-align: right;
+        }
+
+        label small {
+            font-style: italic;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        button {
+            margin-right: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #startButton {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #startButton:hover {
+            background-color: #45a049;
+        }
+
+        #pauseButton {
+            background-color: #FFC107;
+            color: white;
+        }
+
+        #pauseButton:hover {
+            background-color: #e0a800;
+        }
+
+        #stopButton {
+            background-color: #f44336;
+            color: white;
+        }
+
+        #stopButton:hover {
+            background-color: #d32f2f;
+        }
+
+        #resetButton {
+            background-color: #008CBA;
+            color: white;
+        }
+
+        #resetButton:hover {
+            background-color: #007bb5;
+        }
+
+        #container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .circle {
+            width: 25vw;
+            /* 1/4 of the page width */
+            height: 25vw;
+            /* 1/4 of the page height */
+            border-radius: 50%;
+            border: 15px solid gray;
+            /* Default gray border */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-sizing: border-box;
+            background: conic-gradient(gray 100%, gray 100%);
+            /* Initial full gray */
+            margin-right: 50px;
+        }
+
+        .percentage-text {
+            color: black;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .announcement {
+            color: yellow;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .message {
+            text-align: left;
+            max-width: 300px;
+        }
+
+        .loop-message {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #555;
+        }
+
+        #importantNote {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 20px;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Circle Looping(For Syntax) with Percentage and Messages</h2>
+    <div id="controls">
+
+        <div class="input-group"> <label for="index">Step Position <small>(Index)</small>:</label> <input id="indexid"
+                type="text" value="0"> </div>
+        
+        <div class="input-group"> <label for="condition">Condition <small>(How many times)</small>:</label> <input
+                id="inputid" type="text" placeholder="Enter a number"> </div>
+                <div class="input-group"> <label for="increment">Increment Step <small>(Number for each loop)</small>:</label>
+                    <input id="incrementid" type="text" value="1">
+                </div>
+        <div class="input-group">
+            <button id="startButton" onclick="startLoop()">Start</button>
+            <button id="pauseButton" onclick="pauseLoop()">Pause</button>
+            <button id="stopButton" onclick="stopLoop()">Stop & Check</button>
+            <button id="resetButton" onclick="resetLoop()">Reset</button>
+        </div>
+    </div>
+
+    <div id="container">
+        <div class="circle" id="circle"> <span id="percentageText" class="percentage-text">0%</span>
+            <div id="announcementText" class="announcement"></div>
+        </div>
+        <div class="message" id="message"></div>
+    </div>
+
+    <div id="importantNote"> Just assume
+        that
+        "circle is a kind of block" which repeating based on your conditions </div>
+
+   <script>
+    let stopFlag = false;
+        let pauseFlag = false;
+        let interval;
+        let count = 0;
+        let percentage = 0;
+
+        function startLoop() {
+            stopFlag = false; // Reset stop flag
+            pauseFlag = false; // Reset pause flag
+            const inputValue = parseInt(document.getElementById("inputid").value);
+            const startIndex = parseInt(document.getElementById("indexid").value);
+            const circle = document.getElementById("circle");
+            const messageDiv = document.getElementById("message");
+            const percentageText = document.getElementById("percentageText");
+            const announcementText = document.getElementById("announcementText");
+
+            if (isNaN(inputValue) || inputValue <= 0 || isNaN(startIndex) || startIndex < 0) {
+                alert("Please enter valid positive numbers!");
+                return;
+            }
+
+            count = startIndex; // Set initial loop count to startIndex
+            messageDiv.innerHTML = "";
+            announcementText.innerText = ""; // Clear previous announcement
+            circle.style.borderColor = "gray"; // Reset to default border color
+            percentageText.innerText = "0%"; // Reset percentage
+
+            function loopCircle() {
+                if (count < inputValue && !stopFlag && !pauseFlag) {
+                    count++;
+                    let message = `<p class="loop-message" id="message-${count}">${count} time(s) circle is repeating</p>`;
+                    messageDiv.innerHTML += message;
+                    announceLoop(count); // Announce the current loop count
+                    circle.style.borderColor = "gray"; // Border stays gray initially
+
+                    percentage = 0;
+                    percentageText.innerText = `${percentage}%`;
+
+                    interval = setInterval(() => {
+                        if (stopFlag || pauseFlag) {
+                            clearInterval(interval);
+                            return;
+                        }
+
+                        percentage += 2; // Increase percentage by 2
+                        percentageText.innerText = `${Math.min(percentage, 100)}%`; // Update percentage text
+                        const degrees = (percentage / 100) * 360;
+                        circle.style.background = `conic-gradient(blue 0deg, blue ${degrees}deg, gray ${degrees}deg)`;
+
+                        if (percentage >= 100) {
+                            clearInterval(interval); // Stop the interval once 100% is reached
+
+                            let messageElement = document.getElementById(`message-${count}`);
+                            messageElement.innerHTML = `${count} time(s) circle is completed`;
+
+                            setTimeout(() => {
+                                if (count < inputValue) loopCircle(); // Continue to the next loop
+                            }, 1000); // Wait 1 second before starting the next loop
+                        }
+                    }, 50); // Update every 50ms for smooth animation
+                }
+            }
+
+            loopCircle();
+        }
+
+        function announceLoop(loopCount) {
+            const announcementText = document.getElementById("announcementText");
+            announcementText.innerText = `You are in loop ${loopCount} (Increment Step)`;
+            setTimeout(() => {
+                announcementText.innerText = "";
+            }, 3000); // Remove the announcement after 3 seconds
+        }
+
+        function pauseLoop() {
+            pauseFlag = true;
+        }
+
+        function stopLoop() {
+            stopFlag = true;
+            clearInterval(interval); // Clear the interval to stop the loop immediately
+        }
+
+        function resetLoop() {
+            stopFlag = true;
+            clearInterval(interval); // Clear the interval to reset the loop
+            count = 0;
+            percentage = 0;
+            const circle = document.getElementById("circle");
+            const messageDiv = document.getElementById("message");
+            const percentageText = document.getElementById("percentageText");
+            const announcementText = document.getElementById("announcementText");
+
+            circle.style.borderColor = "gray"; // Reset to default border color
+            circle.style.background = "conic-gradient(gray 100%, gray 100%)"; // Reset background
+            messageDiv.innerHTML = ""; // Clear messages
+            percentageText.innerText = "0%"; // Reset percentage
+            announcementText.innerText = ""; // Clear announcement
+        }
+
+   </script>
+</body>
+
+</html>

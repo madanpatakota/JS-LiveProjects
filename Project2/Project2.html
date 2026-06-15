@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Life</title>
+    <link rel="stylesheet" href="../Project2/Project2.css">
+    <style>
+        button:disabled {
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Daily Life</h1>
+        </header>
+        <main>
+            <!-- <div class="panel" id="sync-panel">
+                <h2>Synchronous Operations(Calls)</h2>
+                <button onclick="syncOperation('download')">Video File Downloading 📥</button>
+                <button onclick="syncOperation('instagram')">Watching Instagram Reels (10 Secs) 🎬</button>
+                <button onclick="syncOperation('chat')">Chatting with Friends 💬</button>
+                <button class="allworks-btn" onclick="syncAllWorks()">AllWorks 🚀</button>
+                <div id="sync-content"></div>
+                <div id="sync-allworks-content"></div>
+            </div> -->
+            <div class="panel" id="async-panel">
+                <h2>Asynchronous Operations(Calls)</h2>
+                <div class="refresh-wrapper">
+                    <a class="refresh-icon-btn" onclick="refreshAsyncPanel()" title="Refresh Panel">🔄</a>
+                </div>
+                <div class="button-row">
+                    <button class="btn-download" onclick="asyncOperation('download')">Video File Downloading 📥</button>
+                    <button class="btn-instagram" onclick="asyncOperation('instagram')">Watching Instagram Reels 🎬</button>
+                    <button class="btn-chat" onclick="asyncOperation('chat')">Chatting with Friends 💬</button>
+                    <button class="btn-runall" onclick="asyncAllWorks()">Run All 🚀</button>
+                </div>
+                  
+                <div id="async-content"></div>
+                <div id="async-allworks-content"></div>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2024 Misard Software Solutions. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="../Project2/Project2.js"></script>
+</body>
+
+</html>

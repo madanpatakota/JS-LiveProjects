@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Life</title>
+    <link rel="stylesheet" href="../Project1/Project1.css">
+    <style>
+        button:disabled {
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Daily Life</h1>
+        </header>
+        <main>
+            <div class="panel" id="sync-panel">
+                <h2>Synchronous Operations</h2>
+                <div class="refresh-wrapper">
+                    <a class="refresh-icon-btn" onclick="refreshSyncPanel()" title="Refresh Panel">🔄</a>
+                </div>             
+                <div class="button-row">
+                    <button class="btn-download" onclick="syncOperation('download')">Video File Downloading 📥</button>
+                    <button class="btn-instagram" onclick="syncOperation('instagram')">Watching Instagram Reels 🎬</button>
+                    <button class="btn-chat" onclick="syncOperation('chat')">Chatting with Friends 💬</button>
+                    <button class="btn-runall" onclick="syncAllWorks()">Run All 🚀</button>
+                </div>        
+                <!-- <button onclick="refreshSyncPanel()">🔄 Refresh</button> 🆕 Refresh Button -->
+                <div id="sync-content"></div>
+                <div id="sync-allworks-content"></div>
+            </div>
+            
+        </main>
+        <footer>
+            <p>&copy; 2024 Misard Software Solutions. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="../Project1/Project1.js"></script>
+</body>
+
+</html>
